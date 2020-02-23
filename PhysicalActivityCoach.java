@@ -1,7 +1,23 @@
 /*
+ Author: Mike O'Malley
+ Source File: PhysicalActivityCoach.java
+ Description: See "README.MD".
+
+Ammendment History
+Ver   Date        Author    Details
+----- ----------- --------- ----------------------------------------------------
+0.004 23-Feb-2020 Mike O    Add comment header for file.
+                            Add TextArea and File Input.
+                            Activate the Now and Done buttons.
+
+
 */
 import javax.swing.*;
 import java.awt.*;
+import java.util.Scanner;
+import java.io.FileReader;
+import java.security.SecureRandom;
+
 
 public class PhysicalActivityCoach extends JFrame
 {
@@ -12,6 +28,7 @@ public class PhysicalActivityCoach extends JFrame
    JLabel exerciseTimeLabel                      = new JLabel ("Exercise Time:");
    JLabel exerciseTimeRemainingLabel             = new JLabel ("Exercise Time Remaining:");
    JLabel nextExercisePeriodLabel                = new JLabel ("Next Exercise Period:");
+   JTextArea exercisesTextArea                   = new JTextArea ();
 
    JProgressBar exerciseTimerProgressBar              = new JProgressBar ();
    JProgressBar exercisingTimerProgressBar            = new JProgressBar ();
@@ -37,6 +54,7 @@ public class PhysicalActivityCoach extends JFrame
    // Class data:
 
    private int exerciseCount;
+   private SecureRandom generator = new SecureRandom ();
 
 
    public PhysicalActivityCoach ()
@@ -75,6 +93,8 @@ public class PhysicalActivityCoach extends JFrame
       add (buttonPanel, BorderLayout.SOUTH);
 
 
+      nowButton.addActionListener   (event -> startExercisePeriod () );
+      doneButton.addActionListener  (event -> doExercises () );
       aboutButton.addActionListener (event -> aboutApp() );
       exitButton.addActionListener  (event -> exitApp() );
 
@@ -91,9 +111,32 @@ public class PhysicalActivityCoach extends JFrame
       exercisePeriodDelayTimerProgressBar.setMaximum (exercisePeriodDelayTimer.getDelay() / 1000);
       exercisePeriodDelayTimerProgressBar.setValue   (exercisePeriodDelayTimerProgressBar.getMaximum() );
 
+
+
+      // Load Exercises from File:
+      try
+      {
+         Scanner fileIn = new Scanner (new FileReader ("exercises_list.txt") );
+
+         exercisesTextArea.setText ("");
+
+         while (fileIn.hasNext() == true)
+         {
+            String lineStr = fileIn.nextLine().trim();
+
+            if (lineStr.length() > 0)
+               exercisesTextArea.append (lineStr + "\n");
+         }
+      }
+      catch (Exception err)
+      {
+         err.printStackTrace();
+      }
+
       exercisePeriodDelayTimer.start();
       secondsCountdownTimer.start();
 
+      doExercises ();
    }
 
    private void aboutApp()
@@ -109,6 +152,19 @@ public class PhysicalActivityCoach extends JFrame
       System.exit (0); // All OK
    }
 
+
+   private String getRandomExercise ()
+   {
+      // Count exercises in TextArea
+      // Select and return a random exercise
+
+      String[] exercises = exercisesTextArea.getText().split ("\n");
+      int randVal = generator.nextInt (exercises.length); // 0 <= x < array size
+
+      return exercises[randVal];
+   }
+
+
    private void startExercisePeriod ()
    {
       // A new exercise period is starting ...
@@ -118,9 +174,13 @@ public class PhysicalActivityCoach extends JFrame
 
       exercisingTimer.start();
       exerciseTimer.start();
+      doAnExercise ();
 
       exercisePeriodDelayTimer.stop();
       exercisePeriodDelayTimerProgressBar.setValue (exercisePeriodDelayTimerProgressBar.getMaximum() );
+
+      nowButton.setEnabled  (false);
+      doneButton.setEnabled (true);
    }
 
    private void doExercises ()
@@ -134,6 +194,11 @@ public class PhysicalActivityCoach extends JFrame
       exercisingTimerProgressBar.setValue (exercisingTimerProgressBar.getMaximum() );
 
       exercisePeriodDelayTimer.start();
+
+      nowButton.setEnabled  (true);
+      doneButton.setEnabled (false);
+
+      titleLabel.setText ("Relax: it's not an exercise period." );
    }
 
    private void doAnExercise ()
@@ -142,7 +207,8 @@ public class PhysicalActivityCoach extends JFrame
       // Display in in a label
 
       exerciseCount++;
-      titleLabel.setText ("Exercise #" + exerciseCount + " ...");
+      //titleLabel.setText ("Exercise #" + exerciseCount + " ...");
+      titleLabel.setText (getRandomExercise () );
 
       exerciseTimerProgressBar.setValue   (exerciseTimerProgressBar.getMaximum() );
    }
