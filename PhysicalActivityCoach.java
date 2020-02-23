@@ -9,6 +9,7 @@ Ver   Date        Author    Details
 0.004 23-Feb-2020 Mike O    Add comment header for file.
                             Add TextArea and File Input.
                             Activate the Now and Done buttons.
+                            Random Exercises displayed.
 
 
 */
