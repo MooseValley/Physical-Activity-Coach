@@ -25,12 +25,11 @@ https://github.com/MooseValley/Physical-Activity-Coach
 Used to develop the application in the videos
 
 * Download latest Java SE: Java SDK (software development kit)
-https://www.oracle.com/technetwork/java/javase/downloads/index.html
-
-Run the installer, follow the prompts.
+<br>https://www.oracle.com/technetwork/java/javase/downloads/index.html
+<br>Run the installer, follow the prompts.
 
 * Download and install TextPad:
-https://textpad.com/index.html
+<br>https://textpad.com/index.html
 
 
 ## Web page: Moose's Software Valley - Established July, 1996.
