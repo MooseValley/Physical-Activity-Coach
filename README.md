@@ -12,19 +12,14 @@ No Maven, No Gradle, No 3rd party libraries.  Just plain old Java. :)
 ## YouTube Videos:
 * Episode 1 - Overview, Empty java class file:
 <br>https://youtu.be/VlxiXzpCjh4
-<br>
 * Episode 2 - Basic Graphical User Interface (GUI):
 <br>https://youtu.be/IqVC22NIjeA
-<br>
 * Episode 3 - Timers and ProgressBars:
 <br>https://youtu.be/et_th6q5Dws
-<br>
 * Episode 4 - File input, Text area, Comment header, Random Exercises:
 <br>https://youtu.be/c5ZRm0dWskQ
-<br>
 * Episode 5 - Title, TABs, TextArea, SpinEdits:
 <br>https://youtu.be/2Zw6H_2xRu0
-<br>
 * ::: TBA :::
 
 ## Source Code is on my GitHub:
