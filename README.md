@@ -4,7 +4,12 @@ Develop a basic Java Desktop Application for Windows, Mac, Raspberry Pi, and Lin
 Will NOT work on iPhone, iPad, Android, etc.
 No Maven, No Gradle, No 3rd party libraries.  Just plain old Java. :)
 
-YouTube Videos:
+## Screen Shot: :smiley:
+
+![Pysical Activity Coach](Screen%20Shots/PhysicalActivityCoach.png?raw=true "Pysical Activity Coach")
+Pysical Activity Coach
+
+## YouTube Videos:
 * Episode 1 - Overview, Empty java class file: https://youtu.be/VlxiXzpCjh4
 * Episode 2 - Basic Graphical User Interface (GUI): https://youtu.be/IqVC22NIjeA
 * Episode 3 - Timers and ProgressBars: https://youtu.be/et_th6q5Dws
