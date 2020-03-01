@@ -1,4 +1,5 @@
-# Pysical Activity Coach
+# Build Your Own Software With Moose
+## Season #1: Pysical Activity Coach
 
 Develop a basic Java Desktop Application for Windows, Mac, Raspberry Pi, and Linux PCs.
 Will NOT work on iPhone, iPad, Android, etc.
