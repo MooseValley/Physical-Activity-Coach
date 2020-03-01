@@ -7,7 +7,7 @@ No Maven, No Gradle, No 3rd party libraries.  Just plain old Java. :)
 ## Screen Shot: :smiley:
 
 ![Pysical Activity Coach](Screen%20Shots/PhysicalActivityCoach.png?raw=true "Pysical Activity Coach")
-Pysical Activity Coach
+
 
 ## YouTube Videos:
 * Episode 1 - Overview, Empty java class file: https://youtu.be/VlxiXzpCjh4
@@ -19,6 +19,19 @@ Pysical Activity Coach
 
 ## Source Code is on my GitHub:
 https://github.com/MooseValley/Physical-Activity-Coach
+
+## Required Software:
+
+Used to develop the application in the videos
+
+* Download latest Java SE: Java SDK (software development kit)
+https://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+Run the installer, follow the prompts.
+
+* Download and install TextPad:
+https://textpad.com/index.html
+
 
 ## Web page: Moose's Software Valley - Established July, 1996.
 https://rebrand.ly/MoosesSoftware
