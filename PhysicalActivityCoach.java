@@ -10,6 +10,7 @@ Ver   Date        Author    Details
                             Add TextArea and File Input.
                             Activate the Now and Done buttons.
                             Random Exercises displayed.
+0.005 01-Mar-2020 Mike O    .
 
 
 */
@@ -23,8 +24,13 @@ import java.security.SecureRandom;
 public class PhysicalActivityCoach extends JFrame
 {
    // Class Constants
+   public static final String APPLICATION_VERSION = "v0.005";
+   public static final String APPLICATION_NAME    = "Physical Activity Coach";
+
 
    // GUI Components
+   JTabbedPane tabbedPane                        = new JTabbedPane ();
+
    JLabel titleLabel                             = new JLabel ("");
    JLabel exerciseTimeLabel                      = new JLabel ("Exercise Time:");
    JLabel exerciseTimeRemainingLabel             = new JLabel ("Exercise Time Remaining:");
@@ -34,6 +40,10 @@ public class PhysicalActivityCoach extends JFrame
    JProgressBar exerciseTimerProgressBar              = new JProgressBar ();
    JProgressBar exercisingTimerProgressBar            = new JProgressBar ();
    JProgressBar exercisePeriodDelayTimerProgressBar   = new JProgressBar ();
+
+   JSpinner secondsPerExerciseSpinner            = new JSpinner ();
+   JSpinner secondsPerExercisePeriodSpinner      = new JSpinner ();
+   JSpinner secondsBetweenExercisePeriodsSpinner = new JSpinner ();
 
    JButton nowButton                             = new JButton ("Now");
    JButton doneButton                            = new JButton ("Done");
@@ -60,58 +70,26 @@ public class PhysicalActivityCoach extends JFrame
 
    public PhysicalActivityCoach ()
    {
-      JPanel gridPanel   = new JPanel (new GridLayout (4, 1)); // R,C
-      JPanel buttonPanel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
-      JPanel flow01Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
-      JPanel flow02Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
-      JPanel flow03Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
-      JPanel flow04Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
 
-      flow01Panel.add (titleLabel);
-      flow01Panel.add (new JLabel(""));
-
-      flow02Panel.add (exerciseTimeLabel);
-      flow02Panel.add (exerciseTimerProgressBar);
-
-      flow03Panel.add (exerciseTimeRemainingLabel);
-      flow03Panel.add (exercisingTimerProgressBar);
-
-      flow04Panel.add (nextExercisePeriodLabel);
-      flow04Panel.add (exercisePeriodDelayTimerProgressBar);
-
-      gridPanel.add (flow01Panel);
-      gridPanel.add (flow02Panel);
-      gridPanel.add (flow03Panel);
-      gridPanel.add (flow04Panel);
+      setTitle (APPLICATION_NAME + " - " + APPLICATION_VERSION);
 
 
-      buttonPanel.add (nowButton);
-      buttonPanel.add (doneButton);
-      buttonPanel.add (aboutButton);
-      buttonPanel.add (exitButton);
+      tabbedPane.addTab ("Exercises", null, createExercisesPanel (), "Exercises display");
+      tabbedPane.addTab ("Settings",  null, createSettingsPanel (),  "Program Settings");
 
-      add (gridPanel,   BorderLayout.CENTER);
-      add (buttonPanel, BorderLayout.SOUTH);
+      setLayout (new BorderLayout());
 
-
-      nowButton.addActionListener   (event -> startExercisePeriod () );
-      doneButton.addActionListener  (event -> doExercises () );
-      aboutButton.addActionListener (event -> aboutApp() );
-      exitButton.addActionListener  (event -> exitApp() );
+      add (tabbedPane,              BorderLayout.CENTER);
+      add (createButtonsPanel (),   BorderLayout.SOUTH);
 
 
       exerciseTimerProgressBar.setMinimum (0);
-      exerciseTimerProgressBar.setMaximum (exerciseTimer.getDelay() / 1000);
-      exerciseTimerProgressBar.setValue   (exerciseTimerProgressBar.getMaximum() );
-
       exercisingTimerProgressBar.setMinimum (0);
-      exercisingTimerProgressBar.setMaximum (exercisingTimer.getDelay() / 1000);
-      exercisingTimerProgressBar.setValue   (exercisingTimerProgressBar.getMaximum() );
-
       exercisePeriodDelayTimerProgressBar.setMinimum (0);
-      exercisePeriodDelayTimerProgressBar.setMaximum (exercisePeriodDelayTimer.getDelay() / 1000);
-      exercisePeriodDelayTimerProgressBar.setValue   (exercisePeriodDelayTimerProgressBar.getMaximum() );
 
+      secondsPerExerciseSpinnerChanged();
+      secondsPerExercisePeriodSpinnerChanged();
+      secondsBetweenExercisePeriodsSpinnerChanged();
 
 
       // Load Exercises from File:
@@ -138,6 +116,117 @@ public class PhysicalActivityCoach extends JFrame
       secondsCountdownTimer.start();
 
       doExercises ();
+   }
+
+   private JPanel createExercisesPanel ()
+   {
+      JPanel thePanel    = new JPanel (new BorderLayout ());
+      JPanel gridPanel   = new JPanel (new GridLayout (4, 1)); // R,C
+      JPanel flow01Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
+      JPanel flow02Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
+      JPanel flow03Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
+      JPanel flow04Panel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
+
+      flow01Panel.add (titleLabel);
+      flow01Panel.add (new JLabel(""));
+
+      flow02Panel.add (exerciseTimeLabel);
+      flow02Panel.add (exerciseTimerProgressBar);
+
+      flow03Panel.add (exerciseTimeRemainingLabel);
+      flow03Panel.add (exercisingTimerProgressBar);
+
+      flow04Panel.add (nextExercisePeriodLabel);
+      flow04Panel.add (exercisePeriodDelayTimerProgressBar);
+
+      gridPanel.add (flow01Panel);
+      gridPanel.add (flow02Panel);
+      gridPanel.add (flow03Panel);
+      gridPanel.add (flow04Panel);
+
+
+      thePanel.add (gridPanel,   BorderLayout.CENTER);
+
+      return thePanel;
+   }
+
+   private JPanel createSettingsPanel ()
+   {
+      JPanel thePanel     = new JPanel (new BorderLayout ());
+      JPanel spinnerPanel = new JPanel (new FlowLayout (FlowLayout.CENTER));
+
+                                                                          // val,      Min,     Max,    Step
+      secondsPerExerciseSpinner.setModel            (new SpinnerNumberModel (15,      15,      60,       5) );
+      secondsPerExercisePeriodSpinner.setModel      (new SpinnerNumberModel (60,      60,      5 * 60,  15) );
+      secondsBetweenExercisePeriodsSpinner.setModel (new SpinnerNumberModel (60 * 60, 10 * 60, 60 * 60, 60) );
+
+
+      spinnerPanel.add (new JLabel ("Sec / Exercise: ") );
+      spinnerPanel.add (secondsPerExerciseSpinner);
+
+      spinnerPanel.add (new JLabel ("    Sec / Exercise Period: ") );
+      spinnerPanel.add (secondsPerExercisePeriodSpinner);
+
+      spinnerPanel.add (new JLabel ("    Sec between Exercise Periods: ") );
+      spinnerPanel.add (secondsBetweenExercisePeriodsSpinner);
+
+      thePanel.add (exercisesTextArea, BorderLayout.CENTER);
+      thePanel.add (spinnerPanel,      BorderLayout.SOUTH);
+
+      secondsPerExerciseSpinner.addChangeListener
+          (event -> secondsPerExerciseSpinnerChanged() );
+      secondsPerExercisePeriodSpinner.addChangeListener
+          (event -> secondsPerExercisePeriodSpinnerChanged() );
+      secondsBetweenExercisePeriodsSpinner.addChangeListener
+          (event -> secondsBetweenExercisePeriodsSpinnerChanged() );
+
+      secondsPerExercisePeriodSpinner.setModel      (new SpinnerNumberModel (60,      60,      5 * 60,  15) );
+      secondsBetweenExercisePeriodsSpinner.setModel (new SpinnerNumberModel (60 * 60, 10 * 60, 60 * 60, 60) );
+
+      return thePanel;
+   }
+
+   private JPanel createButtonsPanel ()
+   {
+      JPanel buttonPanel = new JPanel (new FlowLayout (FlowLayout.CENTER) );
+
+      buttonPanel.add (nowButton);
+      buttonPanel.add (doneButton);
+      buttonPanel.add (aboutButton);
+      buttonPanel.add (exitButton);
+
+      nowButton.addActionListener   (event -> startExercisePeriod () );
+      doneButton.addActionListener  (event -> doExercises () );
+      aboutButton.addActionListener (event -> aboutApp() );
+      exitButton.addActionListener  (event -> exitApp() );
+
+      return buttonPanel;
+   }
+
+   private void secondsPerExerciseSpinnerChanged()
+   {
+      exerciseTimer.setDelay ( (int) secondsPerExerciseSpinner.getValue() * 1000);
+
+      exerciseTimerProgressBar.setMaximum (exerciseTimer.getDelay() / 1000);
+      exerciseTimerProgressBar.setValue   (exerciseTimerProgressBar.getMaximum() );
+   }
+
+   private void secondsPerExercisePeriodSpinnerChanged()
+   {
+      //System.out.println ("secondsPerExercisePeriodSpinnerChanged()");
+      //System.out.println (" -> secs: " + (int) secondsPerExercisePeriodSpinner.getValue() );
+      exercisingTimer.setDelay ( (int) secondsPerExercisePeriodSpinner.getValue() * 1000);
+
+      exercisingTimerProgressBar.setMaximum (exercisingTimer.getDelay() / 1000);
+      exercisingTimerProgressBar.setValue   (exercisingTimerProgressBar.getMaximum() );
+   }
+
+   private void secondsBetweenExercisePeriodsSpinnerChanged()
+   {
+      exercisePeriodDelayTimer.setDelay ( (int) secondsBetweenExercisePeriodsSpinner.getValue() * 1000);
+
+      exercisePeriodDelayTimerProgressBar.setMaximum (exercisePeriodDelayTimer.getDelay() / 1000);
+      exercisePeriodDelayTimerProgressBar.setValue   (exercisePeriodDelayTimerProgressBar.getMaximum() );
    }
 
    private void aboutApp()
@@ -173,6 +262,7 @@ public class PhysicalActivityCoach extends JFrame
 
       exerciseCount = 0;
 
+      System.out.println (" -> millisecs: " + exercisingTimer.getDelay() );
       exercisingTimer.start();
       exerciseTimer.start();
       doAnExercise ();
@@ -228,16 +318,16 @@ public class PhysicalActivityCoach extends JFrame
 
       if (exercisingTimer.isRunning() == true)
       {
-         val = exerciseTimerProgressBar.getValue ();
+         val = exercisingTimerProgressBar.getValue ();
          val--;
-         exerciseTimerProgressBar.setValue (val);
+         exercisingTimerProgressBar.setValue (val);
       }
 
       if (exerciseTimer.isRunning() == true)
       {
-         val = exercisingTimerProgressBar.getValue ();
+         val = exerciseTimerProgressBar.getValue ();
          val--;
-         exercisingTimerProgressBar.setValue (val);
+         exerciseTimerProgressBar.setValue (val);
       }
    }
 
