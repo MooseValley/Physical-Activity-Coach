@@ -37,6 +37,12 @@ Used to develop the application in the videos
 * Download and install TextPad:
 <br>https://textpad.com/index.html
 
+See:
+* Installing Java SDK and TextPad:
+<br>https://youtu.be/-pdHMIaIHFM
+
+for further information, step by step guide, trouble shooting, etc.
+
 
 ## Web page: Moose's Software Valley - Established July, 1996.
 https://rebrand.ly/MoosesSoftware
