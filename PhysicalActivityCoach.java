@@ -10,8 +10,10 @@ Ver   Date        Author    Details
                             Add TextArea and File Input.
                             Activate the Now and Done buttons.
                             Random Exercises displayed.
-0.005 01-Mar-2020 Mike O    .
-
+0.005 01-Mar-2020 Mike O    Add Title in title bar,
+                            Add TABs,
+                            Display a TextArea for input / editing of exercices,
+                            Add SpinEdits for controlling the timers.
 
 */
 import javax.swing.*;
